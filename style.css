@@ -1,0 +1,51 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    background-color: #efefef;
+    color: rgb(18, 19, 19);
+    display: grid;
+    font-weight: bolder;
+    place-items: center;
+    min-height: 100vh;
+}
+
+form {
+    display: grid;
+    gap: 45px;
+    max-width: 750px;
+    width: 100%;
+    padding: 3rem 2rem;
+    box-shadow: 0 10px 35px rgba(0,0,0,.2);
+    background-color: #efefef;
+    border-radius: 20px;
+}
+
+label {
+    display: grid;
+    text-transform: uppercase;
+}
+
+input {
+    height: 70px;
+    padding: 0 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+}
+
+input:focus-within {
+    outline-color: tomato;
+}
+
+input::placeholder {
+    color: gainsboro;
+}
