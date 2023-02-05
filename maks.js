@@ -1,7 +1,20 @@
 export default class Masks {
-  constructor(element, option) {
-    this.element = document.querySelector(element);
-    this.option = option;
+  constructor(object) {
+    this.element = document.querySelector(object.element);
+    this.option = object.option;
+    if (this.validClass === undefined) {
+      this.validClass = "valid";
+    }
+    if (this.invalidClass === undefined) {
+      this.invalidClass = "invalid";
+    }
+    if (object.class) {
+      this.validClass = object.class.valid;
+      this.invalidClass = object.class.invalid;
+    }
+    if (object.customMessage !== undefined) {
+      this.customMessage = object.customMessage;
+    }
   }
 
   masks(type, value) {
@@ -42,19 +55,57 @@ export default class Masks {
     }
   }
 
-  addMask() {
-    this.element.addEventListener("input", (e) => {
-      e.target.value = this.masks(this.option, e.target.value);
-      this.masksPattern(this.option).test(e.target.value);
+  masksMessage() {
+    switch (this.option) {
+      case "phone":
+        return "Telefone inválido";
+      case "cpf":
+        return "CPF inválido";
+      case "cep":
+        return "CEP inválido";
+      default:
+        return null;
+    }
+  }
 
-      if (this.masksPattern(this.option).test(e.target.value)) {
-        e.target.classList.add("valid");
-        e.target.classList.remove("invalid");
-      } else {
-        e.target.classList.add("invalid");
-        e.target.classList.remove("valid");
-      }
+  addMessage(element) {
+    if (!element.target.nextElementSibling) {
+      this.message = document.createElement("span");
+      element.target.after(this.message);
+    }
+    if (this.customMessage) {
+      this.message.innerHTML = this.customMessage;
+    } else {
+      this.message.innerHTML = this.masksMessage();
+    }
+  }
+
+  removeMessage() {
+    if (this.message) {
+      this.message.remove();
+    }
+  }
+
+  addMask() {
+    this.element.addEventListener("input", (element) => {
+      // Change the input value to match the Regex as the user types
+      element.target.value = this.masks(this.option, element.target.value);
+      this.validateMask(element);
     });
+  }
+
+  validateMask(element) {
+    // console.log(this.validClass)
+    // Verify if the Regex matches the input value
+    if (this.masksPattern(this.option).test(element.target.value)) {
+      this.removeMessage();
+      element.target.classList.add(this.validClass);
+      element.target.classList.remove(this.invalidClass);
+    } else {
+      this.addMessage(element);
+      element.target.classList.add(this.invalidClass);
+      element.target.classList.remove(this.validClass);
+    }
   }
 
   init() {
