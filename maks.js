@@ -55,7 +55,7 @@ export default class Masks {
     }
   }
 
-  masksMessage() {
+  masksMessage(target) {
     switch (this.option) {
       case "phone":
         return "Telefone inválido";
@@ -63,6 +63,8 @@ export default class Masks {
         return "CPF inválido";
       case "cep":
         return "CEP inválido";
+      case "email":
+        return target.validationMessage;
       default:
         return null;
     }
@@ -86,17 +88,36 @@ export default class Masks {
     }
   }
 
-  addMask() {
+  // validateEmail(element) {
+  //   if (element.target.checkValidity()) {
+  //     element.target.classList.add(this.validClass);
+  //     element.target.classList.remove(this.invalidClass);
+  //   } else {
+  //     element.target.classList.add(this.invalidClass);
+  //     element.target.classList.remove(this.validClass);
+  //     this.addMessage(element);
+  //   }
+  // }
+
+  listenInputChange() {
+    this.element.addEventListener("change", (element) => {
+      element.target.value = this.masks(this.option, element.target.value);
+      this.validateMask(element);
+      console.log(element)
+    });
+  }
+
+  listenInputType() {
     this.element.addEventListener("input", (element) => {
-      // Change the input value to match the Regex as the user types
       element.target.value = this.masks(this.option, element.target.value);
       this.validateMask(element);
     });
   }
 
   validateMask(element) {
-    // console.log(this.validClass)
-    // Verify if the Regex matches the input value
+    if(this.option === "email") {
+      
+    }
     if (this.masksPattern(this.option).test(element.target.value)) {
       this.removeMessage();
       element.target.classList.add(this.validClass);
@@ -110,7 +131,11 @@ export default class Masks {
 
   init() {
     if (this.element && this.option) {
-      this.addMask();
+      if (this.option === "email") {
+        return
+        // this.listenInputChange();
+      }
+      this.listenInputType();
     }
     return this;
   }

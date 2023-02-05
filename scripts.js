@@ -1,5 +1,10 @@
 import Masks from "./maks.js";
 
+const maskEmail = new Masks({
+    element: "[data-field='email']",
+    option: "email",
+});
+
 const maskPhone = new Masks({
   element: "[data-field='phone']",
   option: "phone",
@@ -20,6 +25,7 @@ const maskCep = new Masks({
   option: "cep",
 });
 
+maskEmail.init();
 maskPhone.init();
 maskCpf.init();
 maskCep.init();
