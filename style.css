@@ -43,9 +43,17 @@ input {
 }
 
 input:focus-within {
-    outline-color: tomato;
+    /* outline-color: tomato; */
 }
 
 input::placeholder {
     color: gainsboro;
+}
+
+input.invalid {
+    outline: 5px solid red;
+}
+
+input.valid {
+    outline: 5px solid green;
 }
